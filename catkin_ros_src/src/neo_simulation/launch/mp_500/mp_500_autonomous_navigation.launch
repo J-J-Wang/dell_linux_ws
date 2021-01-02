@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  
+  <!--To launch gmapping to create a map-->
+  <arg name="gmapping" value="false"/> 
+
+  <!--To launch amcl-->
+  <!--NOTE: Do not forget to configure the correct Map for AMCL-->
+  <!--NOTE: Use file neo_simulation/config/mp_500/amcl/mp_500_amcl.launch-->
+  <arg name="amcl" value="true"/>
+
+  <!--To launch move base-->
+  <arg name="move_base" value="true"/>
+
+<!---=================================================================================================================================================================-->
+
+ <!--Naviagation Package-->
+
+ <!--if arg gmapping is set to true (default=false)-->
+
+ <group if="$(arg gmapping)">
+ 	<include file="$(find neo_simulation)/config/mp_500/gmapping/mp_500_gmapping.launch"/>
+ </group>
+
+ <!--if arg amcl is set to true (default=false)-->
+
+ <group if="$(arg amcl)">
+ 	<include file="$(find neo_simulation)/config/mp_500/amcl/mp_500_amcl.launch"/>
+ </group>
+
+ <!--if arg move_base is set to true-->
+
+ <group if="$(arg move_base)">
+ 	<include file="$(find neo_simulation)/config/mp_500/move_base/mp_500_move_base.launch"/>
+ </group> 
+
+  <!-- visualize the segment list -->
+  <node name="visualize_segment_list" pkg="light_scan_sim" type="visualize_segment_list.py" output="screen">
+    <param name="output_topic" value="/map_segment_vis" />
+  </node>
+
+  <!-- The scan simulator -->
+  <node name="light_scan_sim" pkg="light_scan_sim" type="light_scan_sim_node" output="screen">
+    <rosparam file="$(find neo_simulation)/config/mp_500/config.yaml" command="load" />
+  </node>
+
+  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 0 0 0 1 /map_image /odom 1" />
+
+</launch>

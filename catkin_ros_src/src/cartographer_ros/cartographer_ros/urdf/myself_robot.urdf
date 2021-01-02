@@ -1,0 +1,48 @@
+<robot
+  name="myself_urdf">
+  
+ 
+  <link name="base_link">
+   <visual>
+      <origin xyz="0 0 0" />
+      <geometry>
+        <box size="0.5 0.5 0.5" />
+      </geometry>
+      <material name="Cyan" />
+	<color rgba="0 0.4 0.2 0.6"/>
+    </visual>
+  </link>
+	
+
+  <link name="rslidar">
+    <visual>
+      <origin xyz="0 0 0" />
+      <geometry>
+        <cylinder length="0.05" radius="0.05" />
+      </geometry>
+      <material name="gray" />
+    </visual>
+  </link>
+
+  <joint name="laser2link" type="fixed">
+    <parent link="base_link" />
+    <child link="rslidar" />
+    <origin xyz="0.25 0 0.2" rpy="0 0 0" />
+  </joint>
+
+  <link name="imu">
+    <visual>
+      <origin xyz="0 0 0" />
+      <geometry>
+        <cylinder length="0.01" radius="0.01" />
+      </geometry>
+      <material name="gray" />
+    </visual>
+  </link>
+
+  <joint name="imu2link" type="fixed">
+    <parent link="base_link" />
+    <child link="imu" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+</robot>

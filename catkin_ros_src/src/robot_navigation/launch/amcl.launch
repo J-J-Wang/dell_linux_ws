@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <arg name="env_map" default="/home/ys/ros_map/lap.yaml" />
+  <!-- MAP SERVER -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg env_map)">
+  </node>
+
+  <include file="$(find pointcloud_to_laserscan)/launch/point_to_scan.launch" />
+  <!-- AMCL -->
+  <node pkg="amcl" type="amcl" name="amcl">
+  	<remap from="scan" to="lidar_1/scan_filtered"/>
+  	<rosparam file="$(find robot_navigation)/config/amcl/amcl_config.yaml" command="load" />
+    <remap from="scan" to ="scan"/>
+  </node>
+ <!-- 运行rviz -->
+ <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robot_navigation)/config/rviz/nav.rviz"/>
+</launch>

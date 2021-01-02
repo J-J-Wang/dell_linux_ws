@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="robot_teleop" type="logitech_joymsg_pub"    name="logitech_joymsg_pub"    />
+  <node pkg="cmd_to_plc" type="cmd_to_plc" name="cmd_to_plc" output="screen"/>
+</launch> 
